@@ -1,11 +1,11 @@
 const mongoose = require("mongoose");
+const moment = require("moment");
 const Schema = mongoose.Schema;
 
 const DaySchema = new Schema({
   day: {
-    type: Date,
-    required: true,
-    default: Date.now
+    type: String,
+    required: true
   },
   completed: {
     type: Boolean,
