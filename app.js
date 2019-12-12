@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+const router = require("./routes");
 const app = express();
 
 // Database
@@ -19,5 +20,9 @@ mongoose.connection.on("error", err => console.log(err));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+// Router
+
+app.use(router);
 
 module.exports = app;
