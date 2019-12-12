@@ -6,4 +6,10 @@ router.get("/", habitController.index);
 
 router.post("/", habitController.create);
 
+router.get("/:id", habitController.show);
+
+router.put("/:id", habitController.update);
+
+router.delete("/:id", habitController.destroy);
+
 module.exports = router;
