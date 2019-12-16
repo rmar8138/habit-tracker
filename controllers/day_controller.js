@@ -2,7 +2,6 @@ const moment = require("moment");
 const HabitModel = require("../database/models/habit_model");
 
 const completed = async (req, res) => {
-  console.log("this ran");
   const { id: habitId } = req.params;
   const todayFormatted = moment(Date.now()).format("MMM Do YY");
 
@@ -12,8 +11,6 @@ const completed = async (req, res) => {
   const todayExists = habit.days.filter(day => {
     return todayFormatted === day.day;
   }).length;
-
-  console.log(todayExists);
 
   if (todayExists) {
     res.status(400).json("Today has already been tracked!");
@@ -25,6 +22,27 @@ const completed = async (req, res) => {
   }
 };
 
-module.exports = {
-  completed
+const destroy = async (req, res) => {
+  const { habitId, dayId } = req.params;
+
+  const habit = await HabitModel.findByIdAndUpdate(
+    habitId,
+    {
+      $pull: {
+        days: {
+          _id: dayId
+        }
+      }
+    },
+    { new: true }
+  );
+
+  res.json(habit);
 };
+
+module.exports = {
+  completed,
+  destroy
+};
+
+// DO ERROR HANDLING!

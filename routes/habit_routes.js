@@ -15,4 +15,6 @@ router.put("/:id", habitController.update);
 
 router.delete("/:id", habitController.destroy);
 
+router.delete("/:habitId/:dayId", dayController.destroy);
+
 module.exports = router;
