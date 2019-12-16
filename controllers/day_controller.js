@@ -4,8 +4,13 @@ const HabitModel = require("../database/models/habit_model");
 const completed = async (req, res) => {
   const { id: habitId } = req.params;
   const todayFormatted = moment(Date.now()).format("MMM Do YY");
+  let habit;
 
-  const habit = await HabitModel.findById(habitId);
+  try {
+    habit = await HabitModel.findById(habitId);
+  } catch (error) {
+    res.status(400).json(error);
+  }
 
   // only completed new day if todays date doesn't exist
   const todayExists = habit.days.filter(day => {
@@ -24,18 +29,23 @@ const completed = async (req, res) => {
 
 const destroy = async (req, res) => {
   const { habitId, dayId } = req.params;
+  let habit;
 
-  const habit = await HabitModel.findByIdAndUpdate(
-    habitId,
-    {
-      $pull: {
-        days: {
-          _id: dayId
+  try {
+    habit = await HabitModel.findByIdAndUpdate(
+      habitId,
+      {
+        $pull: {
+          days: {
+            _id: dayId
+          }
         }
-      }
-    },
-    { new: true }
-  );
+      },
+      { new: true }
+    );
+  } catch (error) {
+    res.status(400).json(error);
+  }
 
   res.json(habit);
 };
@@ -44,5 +54,3 @@ module.exports = {
   completed,
   destroy
 };
-
-// DO ERROR HANDLING!
