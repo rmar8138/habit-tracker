@@ -1,8 +1,9 @@
 const HabitModel = require("../database/models/habit_model");
 
 const index = async (req, res) => {
+  const { id: user } = req.user;
   try {
-    const habits = await HabitModel.find();
+    const habits = await HabitModel.find({ user });
     res.json(habits);
   } catch (error) {
     res.status(400).json(error);
