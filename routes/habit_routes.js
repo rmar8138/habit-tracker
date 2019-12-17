@@ -1,10 +1,17 @@
 const express = require("express");
+const passport = require("passport");
 const habitController = require("../controllers/habit_controller");
 const dayController = require("../controllers/day_controller");
 const { celebrate, Joi, Segments } = require("celebrate");
 const router = express.Router();
 
-router.get("/", habitController.index);
+router.get(
+  "/",
+  passport.authenticate("jwt", {
+    session: false
+  }),
+  habitController.index
+);
 
 router.post(
   "/",
