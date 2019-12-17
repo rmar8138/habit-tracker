@@ -1,3 +1,4 @@
+const jwt = require("jsonwebtoken");
 const UserModel = require("../database/models/user_model");
 
 const register = async (req, res) => {
@@ -14,6 +15,14 @@ const register = async (req, res) => {
   }
 };
 
+const login = (req, res) => {
+  // set jwt to cookies
+  const token = jwt.sign({ sub: req.user._id }, process.env.JWT_SECRET);
+  // res.cookies("jwt", token);
+  res.json(token);
+};
+
 module.exports = {
-  register
+  register,
+  login
 };

@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const expressSession = require("express-session");
 const router = require("./routes");
+const passport = require("./config/passport");
 const app = express();
 
 // Database
@@ -34,6 +35,9 @@ app.use(
     }
   })
 );
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Router
 
