@@ -12,8 +12,15 @@ const index = async (req, res) => {
 
 const show = async (req, res) => {
   const { id } = req.params;
+  const { id: user } = req.user;
   try {
     const habit = await HabitModel.findById(id);
+
+    // check if habit belongs to user
+    if (habit.user !== user) {
+      return res.status(401).json("Unauthorized to view this habit");
+    }
+
     res.json(habit);
   } catch (error) {
     res.status(400).json(error);
@@ -22,8 +29,9 @@ const show = async (req, res) => {
 
 const create = async (req, res) => {
   const { name } = req.body;
+  const { id: user } = req.user;
   try {
-    const habit = await HabitModel.create({ name });
+    const habit = await HabitModel.create({ name, user });
     res.json(habit);
   } catch (error) {
     res.status(400).json(error);

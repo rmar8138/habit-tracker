@@ -17,16 +17,24 @@ router.post(
   "/",
   celebrate({
     [Segments.BODY]: {
-      name: Joi.string().required(),
-      days: Joi.array().required()
+      name: Joi.string().required()
     }
+  }),
+  passport.authenticate("jwt", {
+    session: false
   }),
   habitController.create
 );
 
 router.post("/:id/completed", dayController.completed);
 
-router.get("/:id", habitController.show);
+router.get(
+  "/:id",
+  passport.authenticate("jwt", {
+    session: false
+  }),
+  habitController.show
+);
 
 router.put("/:id", habitController.update);
 
